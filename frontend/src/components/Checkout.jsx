@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // ---------- sub-components ----------
 
-function ProductCard({ cartValue }) {
+function ProductCard({ productName, cartValue }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: '14px',
@@ -20,23 +20,23 @@ function ProductCard({ cartValue }) {
         fontSize: '24px',
         border: '1px solid rgba(255,255,255,0.06)',
       }}>
-        💻
+        🛒
       </div>
       <div style={{ flex: 1 }}>
-        <p style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.85)' }}>MacBook Pro M3 — Space Black</p>
-        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>18GB Unified Memory · 512GB SSD</p>
+        <p style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.85)' }}>{productName}</p>
+        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>Dynamic Merchant Cart Data</p>
       </div>
-      <p style={{ fontSize: '16px', fontWeight: 700, color: 'white' }}>₹{cartValue.toLocaleString()}</p>
+      <p style={{ fontSize: '16px', fontWeight: 700, color: 'white' }}>₹{Number(cartValue).toLocaleString()}</p>
     </div>
   );
 }
 
-function InputField({ label, name, value, onChange, step = '1' }) {
+function InputField({ label, name, value, onChange, step = '1', type = 'number' }) {
   return (
     <div>
       <label className="field-label">{label}</label>
       <input
-        type="number"
+        type={type}
         name={name}
         value={value}
         onChange={onChange}
@@ -167,8 +167,9 @@ const FIELDS = [
 ];
 
 export default function Checkout() {
-  const CART_VALUE = 125000;
   const [formData, setFormData] = useState({
+    product_name: 'MacBook Pro M3',
+    cart_value: 125000,
     age: 28,
     income: 850000,
     credit_score: 720,
@@ -180,7 +181,8 @@ export default function Checkout() {
   const [status, setStatus] = useState('idle'); // idle | loading | approved | declined | counter_offer | error
 
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: parseFloat(e.target.value) || 0 }));
+    const val = e.target.type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value;
+    setFormData(prev => ({ ...prev, [e.target.name]: val }));
   };
 
   const handleSubmit = async (e) => {
@@ -198,9 +200,9 @@ export default function Checkout() {
           shipping_zip: "10001"
         },
         cart_data: {
-          total_value: CART_VALUE,
+          total_value: formData.cart_value,
           currency: "INR",
-          items: [{ name: "MacBook Pro M3", category: "electronics", price: CART_VALUE }]
+          items: [{ name: formData.product_name, category: "electronics", price: formData.cart_value }]
         },
         telemetry: {
           ip_address: vpnDetected ? "185.15.2.1" : "192.168.1.1",
@@ -244,15 +246,15 @@ export default function Checkout() {
       {/* Left: Order summary */}
       <div className="glass" style={{ borderRadius: '20px', padding: '28px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-          Order Summary
+          Order Summary (Merchant View)
         </p>
-        <ProductCard cartValue={CART_VALUE} />
+        <ProductCard productName={formData.product_name} cartValue={formData.cart_value} />
 
         <Divider />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {[
-            { label: 'Subtotal', value: `₹${CART_VALUE.toLocaleString()}` },
+            { label: 'Subtotal', value: `₹${Number(formData.cart_value).toLocaleString()}` },
             { label: 'Shipping', value: 'Free', accent: '#34d399' },
             { label: 'BNPL Fee', value: '0%', accent: '#34d399' },
           ].map(row => (
@@ -267,7 +269,7 @@ export default function Checkout() {
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: '15px', fontWeight: 700, color: 'white' }}>Total</span>
-          <span style={{ fontSize: '22px', fontWeight: 800, color: 'white', letterSpacing: '-0.03em' }}>₹{CART_VALUE.toLocaleString()}</span>
+          <span style={{ fontSize: '22px', fontWeight: 800, color: 'white', letterSpacing: '-0.03em' }}>₹{Number(formData.cart_value).toLocaleString()}</span>
         </div>
 
         {/* BNPL Splits */}
@@ -281,7 +283,7 @@ export default function Checkout() {
             BNPL Split
           </p>
           <p style={{ fontSize: '20px', fontWeight: 800, color: 'white', letterSpacing: '-0.02em' }}>
-            4 × ₹{(CART_VALUE / 4).toLocaleString()} <span style={{ fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>/ month</span>
+            4 × ₹{(formData.cart_value / 4).toLocaleString()} <span style={{ fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>/ month</span>
           </p>
           <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '4px' }}>0% interest · No hidden fees</p>
         </div>
@@ -332,6 +334,18 @@ export default function Checkout() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             API Key Verified
           </span>
+        </div>
+
+        <Divider label="Merchant Cart Data" />
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '16px',
+          marginBottom: '24px',
+          marginTop: '16px'
+        }}>
+          <InputField label="Product Name" name="product_name" value={formData.product_name} onChange={handleChange} type="text" />
+          <InputField label="Cart Total (₹)" name="cart_value" value={formData.cart_value} onChange={handleChange} step="1000" />
         </div>
 
         <Divider label="Applicant Profile" />
