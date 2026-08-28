@@ -3,112 +3,113 @@ import Checkout from './components/Checkout';
 import AdminDashboard from './components/AdminDashboard';
 import ApiDocs from './components/ApiDocs';
 
+const tabs = [
+  { id: 'checkout', label: 'API Sandbox' },
+  { id: 'api_docs', label: 'Documentation' },
+  { id: 'admin', label: 'Dashboard' },
+];
+
 function App() {
   const [view, setView] = useState('checkout');
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Ambient background orbs */}
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg)' }}>
+      
+      {/* Subtle texture overlay */}
       <div style={{
-        position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0,
-      }}>
-        <div style={{
-          position: 'absolute', top: '-20%', left: '-15%',
-          width: '50vw', height: '50vw',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(79,142,247,0.07) 0%, transparent 70%)',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '-20%', right: '-15%',
-          width: '50vw', height: '50vw',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(124,106,247,0.07) 0%, transparent 70%)',
-        }} />
-        {/* Subtle grid */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
-          backgroundSize: '60px 60px',
-        }} />
-      </div>
+        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
+        background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(204,120,92,0.04) 0%, transparent 70%)',
+      }} />
 
       {/* Nav */}
       <header style={{
-        position: 'relative', zIndex: 10,
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        backdropFilter: 'blur(20px)',
-        background: 'rgba(12,14,20,0.7)',
+        position: 'sticky', top: 0, zIndex: 50,
+        background: 'rgba(26, 25, 21, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid var(--border)',
       }}>
         <div style={{
-          maxWidth: '1200px', margin: '0 auto',
-          padding: '0 24px',
-          height: '64px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          maxWidth: '1100px', margin: '0 auto',
+          padding: '0 28px',
+          height: '56px',
+          display: 'flex', alignItems: 'center', gap: '32px',
         }}>
           {/* Logo */}
           <button
             onClick={() => setView('checkout')}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}
+            style={{ display: 'flex', alignItems: 'center', gap: '9px', border: 'none', background: 'none', cursor: 'pointer', padding: 0, flexShrink: 0 }}
           >
             <div style={{
-              width: '32px', height: '32px', borderRadius: '9px',
-              background: 'linear-gradient(135deg, #4f8ef7, #7c6af7)',
+              width: '28px', height: '28px', borderRadius: '7px',
+              background: 'var(--accent)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 16px rgba(124,106,247,0.3)',
             }}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2L13 5V11L8 14L3 11V5L8 2Z" fill="white" fillOpacity="0.9" />
               </svg>
             </div>
             <span style={{
-              fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '18px',
-              color: 'white', letterSpacing: '-0.02em',
+              fontFamily: "'DM Serif Display', serif",
+              fontWeight: 400,
+              fontSize: '18px',
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.01em',
             }}>
               CrediSense
             </span>
           </button>
 
-          {/* Tab switcher */}
-          <nav style={{
-            display: 'flex', gap: '2px',
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: '10px', padding: '3px',
-          }}>
-            {[
-              { id: 'checkout', label: 'API Sandbox (Test)' },
-              { id: 'api_docs', label: 'API Docs' },
-              { id: 'admin', label: 'Merchant Dashboard' },
-            ].map(tab => (
+          {/* Divider */}
+          <div style={{ width: '1px', height: '18px', background: 'var(--border)', flexShrink: 0 }} />
+
+          {/* Tabs */}
+          <nav style={{ display: 'flex', gap: '4px', flex: 1 }}>
+            {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setView(tab.id)}
                 style={{
-                  padding: '7px 18px',
-                  borderRadius: '7px',
+                  padding: '5px 14px',
+                  borderRadius: '6px',
                   border: 'none',
                   cursor: 'pointer',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  fontFamily: "'Inter', sans-serif",
-                  transition: 'all 0.2s ease',
-                  background: view === tab.id ? 'rgba(255,255,255,0.08)' : 'transparent',
-                  color: view === tab.id ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)',
-                  boxShadow: view === tab.id ? '0 1px 4px rgba(0,0,0,0.3)' : 'none',
+                  fontSize: '13.5px',
+                  fontWeight: view === tab.id ? 500 : 400,
+                  fontFamily: "'DM Sans', sans-serif",
+                  letterSpacing: '-0.01em',
+                  transition: 'all 0.15s ease',
+                  background: view === tab.id ? 'rgba(255,255,255,0.07)' : 'transparent',
+                  color: view === tab.id ? 'var(--text-primary)' : 'var(--text-secondary)',
                 }}
               >
                 {tab.label}
               </button>
             ))}
           </nav>
+
+          {/* Live badge */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <div style={{ position: 'relative', width: '6px', height: '6px' }}>
+              <div style={{
+                position: 'absolute', inset: 0,
+                borderRadius: '50%',
+                background: 'var(--green)',
+                animation: 'ping 2s cubic-bezier(0,0,0.2,1) infinite',
+                opacity: 0.5,
+              }} />
+              <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'var(--green)' }} />
+            </div>
+            <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 400 }}>Live</span>
+          </div>
         </div>
       </header>
 
       {/* Main */}
       <main style={{
         flex: 1, position: 'relative', zIndex: 10,
-        maxWidth: '1200px', width: '100%',
-        margin: '0 auto', padding: '48px 24px',
+        maxWidth: '1100px', width: '100%',
+        margin: '0 auto', padding: '40px 28px 60px',
       }}>
         <div className="animate-fade-in" key={view}>
           {view === 'checkout' && <Checkout />}
@@ -120,16 +121,24 @@ function App() {
       {/* Footer */}
       <footer style={{
         position: 'relative', zIndex: 10,
-        borderTop: '1px solid rgba(255,255,255,0.04)',
-        padding: '20px 24px',
-        textAlign: 'center',
-        fontSize: '12px',
-        color: 'rgba(255,255,255,0.2)',
-        fontWeight: 500,
-        letterSpacing: '0.02em',
+        borderTop: '1px solid var(--border)',
+        padding: '16px 28px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        maxWidth: '1100px', width: '100%', margin: '0 auto',
       }}>
-        CrediSense · Intelligent BNPL Risk Assessment
+        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+          CrediSense · Intelligent BNPL Risk Assessment
+        </span>
+        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+          Powered by XGBoost + SHAP
+        </span>
       </footer>
+
+      <style>{`
+        @keyframes ping {
+          75%, 100% { transform: scale(2.5); opacity: 0; }
+        }
+      `}</style>
     </div>
   );
 }

@@ -10,6 +10,27 @@
   }
 
   :root {
+    --bg: #1a1915;
+    --bg-secondary: #211f1a;
+    --bg-card: #252320;
+    --bg-hover: #2d2b27;
+    --border: rgba(255, 255, 255, 0.07);
+    --border-strong: rgba(255, 255, 255, 0.12);
+    --text-primary: #e8e4dc;
+    --text-secondary: rgba(232, 228, 220, 0.55);
+    --text-muted: rgba(232, 228, 220, 0.3);
+    --accent: #cc785c;
+    --accent-dim: rgba(204, 120, 92, 0.15);
+    --accent-border: rgba(204, 120, 92, 0.3);
+    --green: #5a9e7c;
+    --green-dim: rgba(90, 158, 124, 0.12);
+    --green-border: rgba(90, 158, 124, 0.25);
+    --red: #c4614c;
+    --red-dim: rgba(196, 97, 76, 0.1);
+    --red-border: rgba(196, 97, 76, 0.2);
+    --amber: #b8933a;
+    --amber-dim: rgba(184, 147, 58, 0.1);
+    --amber-border: rgba(184, 147, 58, 0.2);
     color-scheme: dark;
   }
 
@@ -20,11 +41,12 @@
   }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: #0c0e14;
-    color: rgba(255, 255, 255, 0.85);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-primary);
     overflow-x: hidden;
     min-height: 100vh;
+    letter-spacing: -0.01em;
   }
 
   input[type=number]::-webkit-inner-spin-button,
@@ -33,110 +55,101 @@
     margin: 0;
   }
 
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.08);
-    border-radius: 4px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255,255,255,0.15);
-  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
 
   ::selection {
-    background: rgba(124, 106, 247, 0.3);
-    color: white;
+    background: rgba(204, 120, 92, 0.25);
+    color: var(--text-primary);
   }
 }
 
 @layer components {
-  /* Glass panel */
+
+  /* Glass / Card panel */
   .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
   }
 
   .glass-hover {
-    transition: all 0.25s ease;
+    transition: background 0.2s ease, border-color 0.2s ease;
   }
-
   .glass-hover:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: var(--bg-hover);
+    border-color: var(--border-strong);
   }
 
   /* Input field */
   .field {
     width: 100%;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 10px;
-    padding: 11px 16px;
-    color: white;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text-primary);
     font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    transition: all 0.2s ease;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: -0.01em;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
     outline: none;
   }
 
   .field:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-    background: rgba(0, 0, 0, 0.3);
+    border-color: var(--border-strong);
   }
 
   .field:focus {
-    border-color: rgba(124, 106, 247, 0.5);
-    background: rgba(124, 106, 247, 0.04);
-    box-shadow: 0 0 0 3px rgba(124, 106, 247, 0.1);
+    border-color: rgba(204, 120, 92, 0.5);
+    box-shadow: 0 0 0 3px rgba(204, 120, 92, 0.1);
   }
 
   /* Label */
   .field-label {
     display: block;
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.35);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
-  /* Gradient button */
+  /* Primary button */
   .btn-primary {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 14px 24px;
-    background: linear-gradient(135deg, #4f8ef7, #7c6af7);
-    color: white;
-    font-weight: 600;
-    font-size: 15px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 24px rgba(124, 106, 247, 0.25);
+    padding: 12px 24px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 500;
+    font-size: 14.5px;
+    font-family: 'DM Sans', sans-serif;
     letter-spacing: -0.01em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(204,120,92,0.2);
   }
 
   .btn-primary:hover:not(:disabled) {
+    background: #d98567;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 6px 20px rgba(204,120,92,0.3);
     transform: translateY(-1px);
-    box-shadow: 0 8px 32px rgba(124, 106, 247, 0.4);
   }
 
   .btn-primary:active:not(:disabled) {
-    transform: translateY(0px) scale(0.99);
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
   }
 
   .btn-primary:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 
@@ -145,54 +158,66 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 11px 24px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    color: rgba(255,255,255,0.7);
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    color: var(--text-secondary);
     font-weight: 500;
     font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
     cursor: pointer;
-    transition: all 0.2s ease;
-    letter-spacing: -0.01em;
+    transition: all 0.15s ease;
   }
 
   .btn-secondary:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.15);
-    color: white;
+    background: var(--bg-hover);
+    border-color: rgba(255,255,255,0.18);
+    color: var(--text-primary);
   }
 
-  /* Badge */
+  /* Badges */
   .badge-approved {
-    background: rgba(16,185,129,0.1);
-    border: 1px solid rgba(16,185,129,0.2);
-    color: #34d399;
-    font-size: 10px;
-    font-weight: 700;
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    color: #6db890;
+    font-size: 10.5px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     padding: 3px 10px;
     border-radius: 100px;
   }
 
   .badge-declined {
-    background: rgba(244,63,94,0.1);
-    border: 1px solid rgba(244,63,94,0.2);
-    color: #fb7185;
-    font-size: 10px;
-    font-weight: 700;
+    background: var(--red-dim);
+    border: 1px solid var(--red-border);
+    color: #d97070;
+    font-size: 10.5px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  .badge-warning {
+    background: var(--amber-dim);
+    border: 1px solid var(--amber-border);
+    color: #c9a84c;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     padding: 3px 10px;
     border-radius: 100px;
   }
 
   /* Spinner */
   .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255,255,255,0.2);
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid rgba(255,255,255,0.2);
     border-top-color: white;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
@@ -200,5 +225,29 @@
 
   @keyframes spin {
     to { transform: rotate(360deg); }
+  }
+
+  /* Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease both;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Ping animation for live dot */
+  @keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
   }
 }

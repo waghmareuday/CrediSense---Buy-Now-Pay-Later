@@ -11,9 +11,9 @@ const fmt = (iso) =>
   new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
 const riskColor = (p) => {
-  if (p < 0.35) return '#10b981';
-  if (p < 0.6) return '#f59e0b';
-  return '#f43f5e';
+  if (p < 0.30) return 'var(--green)';
+  if (p < 0.40) return 'var(--amber)';
+  return 'var(--red)';
 };
 
 // ---------- Custom Tooltip ----------
@@ -23,17 +23,17 @@ function ShapTooltip({ active, payload }) {
   const d = payload[0].payload;
   return (
     <div style={{
-      background: '#0f1117',
-      border: '1px solid rgba(255,255,255,0.1)',
+      background: 'var(--bg-card)',
+      border: '1px solid var(--border)',
       borderRadius: '12px',
       padding: '12px 16px',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       minWidth: '180px',
     }}>
-      <p style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(255,255,255,0.5)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+      <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
         {d.feature}
       </p>
-      <p style={{ fontSize: '15px', fontWeight: 700, color: d.impact > 0 ? '#fb7185' : '#34d399' }}>
+      <p style={{ fontSize: '15px', fontWeight: 600, color: d.impact > 0 ? 'var(--red)' : 'var(--green)' }}>
         {d.impact > 0 ? '+' : ''}{d.impact.toFixed(4)} impact
       </p>
       <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.35)', marginTop: '4px' }}>
@@ -48,10 +48,10 @@ function ShapTooltip({ active, payload }) {
 function KpiCard({ label, value, sub, accent }) {
   return (
     <div style={{
-      background: 'rgba(0,0,0,0.25)',
-      border: '1px solid rgba(255,255,255,0.06)',
-      borderRadius: '14px',
-      padding: '18px 20px',
+      background: 'var(--bg-secondary)',
+      border: '1px solid var(--border)',
+      borderRadius: '12px',
+      padding: '16px 18px',
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -59,13 +59,13 @@ function KpiCard({ label, value, sub, accent }) {
         position: 'absolute', top: 0, left: 0, right: 0, height: '2px',
         background: accent || 'rgba(255,255,255,0.08)',
       }} />
-      <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
+      <p style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>
         {label}
       </p>
-      <p style={{ fontSize: '22px', fontWeight: 800, color: 'white', letterSpacing: '-0.03em', lineHeight: 1 }}>
+      <p style={{ fontSize: '21px', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1 }}>
         {value}
       </p>
-      {sub && <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginTop: '6px' }}>{sub}</p>}
+      {sub && <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '5px' }}>{sub}</p>}
     </div>
   );
 }
@@ -229,19 +229,19 @@ export default function AdminDashboard() {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: '300px 1fr',
+      gridTemplateColumns: '280px 1fr',
       gap: '20px',
-      height: 'calc(100vh - 200px)',
-      minHeight: '600px',
+      height: 'calc(100vh - 180px)',
+      minHeight: '580px',
     }}>
 
       {/* ── Left: Transaction feed ── */}
-      <div className="glass" style={{ borderRadius: '20px', padding: '20px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div className="glass" style={{ borderRadius: '14px', padding: '18px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexShrink: 0 }}>
           <div>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Live Feed</p>
-            <p style={{ fontSize: '15px', fontWeight: 700, color: 'white', marginTop: '2px' }}>Applications</p>
+            <p style={{ fontSize: '10.5px', fontWeight: 500, color: 'var(--text-muted)', letterSpacing: '0.07em', textTransform: 'uppercase' }}>Live Feed</p>
+            <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px', fontFamily: "'DM Serif Display', serif" }}>Applications</p>
           </div>
           {/* Pulse dot */}
           <div style={{ position: 'relative', width: '10px', height: '10px' }}>
@@ -266,15 +266,15 @@ export default function AdminDashboard() {
             display: 'grid', gridTemplateColumns: '1fr 1fr',
             gap: '8px', marginBottom: '16px', flexShrink: 0,
           }}>
-            <div style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.15)', borderRadius: '10px', padding: '10px 12px' }}>
-              <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', fontWeight: 600, marginBottom: '4px' }}>Approved</p>
-              <p style={{ fontSize: '18px', fontWeight: 800, color: '#34d399' }}>
+            <div style={{ background: 'var(--green-dim)', border: '1px solid var(--green-border)', borderRadius: '8px', padding: '10px 12px' }}>
+              <p style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '4px' }}>Approved</p>
+              <p style={{ fontSize: '18px', fontWeight: 600, color: 'var(--green)' }}>
                 {transactions.filter(t => t.decision === 'APPROVED').length}
               </p>
             </div>
-            <div style={{ background: 'rgba(244,63,94,0.07)', border: '1px solid rgba(244,63,94,0.15)', borderRadius: '10px', padding: '10px 12px' }}>
-              <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', fontWeight: 600, marginBottom: '4px' }}>Declined</p>
-              <p style={{ fontSize: '18px', fontWeight: 800, color: '#fb7185' }}>
+            <div style={{ background: 'var(--red-dim)', border: '1px solid var(--red-border)', borderRadius: '8px', padding: '10px 12px' }}>
+              <p style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '4px' }}>Declined</p>
+              <p style={{ fontSize: '18px', fontWeight: 600, color: 'var(--red)' }}>
                 {transactions.filter(t => t.decision === 'DECLINED').length}
               </p>
             </div>
@@ -299,18 +299,12 @@ export default function AdminDashboard() {
       </div>
 
       {/* ── Right: SHAP panel ── */}
-      <div className="glass" style={{ borderRadius: '20px', padding: '28px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div className="glass" style={{ borderRadius: '14px', padding: '24px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Header */}
         <div style={{ flexShrink: 0, borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '20px', marginBottom: '24px' }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            Model Explainability Engine
-          </p>
-          <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: '22px', fontWeight: 800, color: 'white', letterSpacing: '-0.03em', marginTop: '4px' }}>
-            SHAP Analysis
-          </h2>
-          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)', marginTop: '6px', lineHeight: 1.6 }}>
-            SHapley Additive exPlanations · Required for FinTech regulatory compliance (ECOA, GDPR Article 22)
-          </p>
+          <p style={{ fontSize: '10.5px', fontWeight: 500, color: 'var(--text-muted)', letterSpacing: '0.07em', textTransform: 'uppercase' }}>Model Explainability</p>
+          <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '22px', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginTop: '4px' }}>SHAP Analysis</h2>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '5px', lineHeight: 1.5 }}>SHapley Additive exPlanations · Required for FinTech regulatory compliance (ECOA, GDPR Art. 22)</p>
         </div>
 
         {selected ? (
@@ -368,8 +362,8 @@ export default function AdminDashboard() {
               paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.05)',
             }}>
               {[
-                { color: '#f43f5e', label: 'Increases default risk' },
-                { color: '#10b981', label: 'Decreases default risk' },
+                { color: 'var(--red)', label: 'Increases default risk' },
+                { color: 'var(--green)', label: 'Decreases default risk' },
               ].map(item => (
                 <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <div style={{
